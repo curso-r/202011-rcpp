@@ -1,0 +1,34 @@
+---
+output: github_document
+---
+
+# Rcpp
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Repositório principal do curso Rcpp.
+
+Inscreva-se no curso: https://www.curso-r.com/cursos/rcpp
+
+**Acesse o material completo do curso escolhendo uma das turmas abaixo**.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::kable(CursoR:::listar_turmas_recentes("rcpp"))
+```
+
+# Ementa
+
+- Escrever algoritmos simples em C++
+- Substituir uma função escrita em R por uma função escrita em C++, chamando-a pelo R, usando o pacote `{Rcpp}`
+- Utilizar as funções no seu pacote
+- Trabalhar com matrizes e arrays no Cpp
+- Utilizar funções de bibliotecas externas feitas em C++
+- Navegar pelo maravilhoso universo do R com C++ através do pacote `{cpp11}`
+
