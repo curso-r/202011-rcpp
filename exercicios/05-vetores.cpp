@@ -28,7 +28,6 @@ selecionar <- function(v, s) {
 }
 */
 
-
 // Crie uma função equivalente à função `rep` do R
 
 /*** R

@@ -40,6 +40,3 @@ b <- bench::mark(
 )
 plot(b)
 */
-
-
-

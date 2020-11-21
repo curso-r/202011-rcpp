@@ -5,7 +5,7 @@ using namespace Rcpp;
 LogicalVector cpp_is_na (NumericVector x)
 {
   LogicalVector out(x.size());
-  for(size_t i = 0; i < x.size(); i ++)
+  for(int i = 0; i < x.size(); i ++)
   {
     out[i] = NumericVector::is_na(x[i]);
   }
@@ -16,7 +16,7 @@ LogicalVector cpp_is_na (NumericVector x)
 LogicalVector cpp_is_nan (NumericVector x)
 {
   LogicalVector out(x.size());
-  for(size_t i = 0; i < x.size(); i ++)
+  for(int i = 0; i < x.size(); i ++)
   {
     out[i] = R_IsNaN(x[i]);
   }

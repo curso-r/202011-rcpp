@@ -80,7 +80,7 @@ List elementos()
   NumericVector res4 = v[logical];
   
   // Vetor de atribuição
-  NumericVector v2{200, 300};
+  NumericVector v2{200, 400};
   
   // Atribuindo valores
   v[0]         = 100;
