@@ -55,3 +55,7 @@ CursoR::atualizar_material()
 | 06-armadillo.cpp          | <https://curso-r.github.io/202011-rcpp/exemplos/06-armadillo.cpp>          |
 | 07-chamar-funcao-do-r.cpp | <https://curso-r.github.io/202011-rcpp/exemplos/07-chamar-funcao-do-r.cpp> |
 | 08-escapar.cpp            | <https://curso-r.github.io/202011-rcpp/exemplos/08-escapar.cpp>            |
+| 09-stl.cpp                | <https://curso-r.github.io/202011-rcpp/exemplos/09-stl.cpp>                |
+| 10-XPtr.cpp               | <https://curso-r.github.io/202011-rcpp/exemplos/10-XPtr.cpp>               |
+| 12-rcpp\_parallel.cpp     | <https://curso-r.github.io/202011-rcpp/exemplos/12-rcpp_parallel.cpp>      |
+| introCpp11.cpp            | <https://curso-r.github.io/202011-rcpp/exemplos/introCpp11.cpp>            |
