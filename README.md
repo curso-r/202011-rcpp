@@ -28,7 +28,8 @@ Certifique que você está dentro do projeto criado no passo 2 e rode o
 código abaixo.
 
 **Observação**: Assim que rodar o código abaixo, o programa vai pedir
-uma escolha de opções. Escolha o número correspondente ao curso de Rcpp!
+uma escolha de opções. Escolha o número correspondente ao curso de
+Rcpp\!
 
 ``` r
 # Baixar ou atualizar material do curso
@@ -38,13 +39,13 @@ CursoR::atualizar_material()
 ## Slides
 
 | Slide             | Link                                                      | Link em PDF                                                                |
-|:------------------|:----------------------------------------------------------|:---------------------------------------------------------------------------|
+| :---------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------- |
 | slides/index.html | <https://curso-r.github.io/202011-rcpp/slides/index.html> | <a href='https://curso-r.github.io/202011-rcpp/slides/index.pdf'> PDF </a> |
 
 ## Scripts usados em aula
 
 | script                    | link                                                                       |
-|:--------------------------|:---------------------------------------------------------------------------|
+| :------------------------ | :------------------------------------------------------------------------- |
 | 00-hello-world.cpp        | <https://curso-r.github.io/202011-rcpp/exemplos/00-hello-world.cpp>        |
 | 01-primeira-funcao.cpp    | <https://curso-r.github.io/202011-rcpp/exemplos/01-primeira-funcao.cpp>    |
 | 02-vetores.cpp            | <https://curso-r.github.io/202011-rcpp/exemplos/02-vetores.cpp>            |

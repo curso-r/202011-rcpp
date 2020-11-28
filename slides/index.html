@@ -4,7 +4,7 @@
     <title>R e C++</title>
     <meta charset="utf-8" />
     <meta name="author" content="Daniel Falbel" />
-    <script src="libs/header-attrs-2.5/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.4/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="theme.css" type="text/css" />
   </head>
@@ -649,7 +649,218 @@ void forever()
 ---
 class: middle, center
 
+## Exemplo 08
+
+---
+class: middle, center
+
 ## Exercício 09
+
+---
+
+## STL
+
+A [*Standard Templates Library*](https://pt.wikipedia.org/wiki/Standard_Template_Library) possui implementação eficiente e segura de muitos algoritmos e estruturas de dados.
+
+- No curso vamos apenas fazer um exemplo!
+- Recomendo ler [aqui](https://adv-r.hadley.nz/rcpp.html#stl) para uma introduçãoum pouco mais completa.
+
+---
+
+## Exemplo 09
+
+---
+
+## Exercício 10
+
+---
+
+## Ponteiros externos (XPtrs)
+
+Muitas vezes queremos persistir objetos que criamos no C++, motivos incluem:
+
+- Esses objetos são complicados para serem representados no R.
+- Os objetos são demorados para serem reconstruidos e você quer aproveitar aproveitar que o cálculo.
+
+Para isso usamos o template `Rcpp::XPtr`. 
+
+---
+
+class: middle, center
+
+## Exemplo 10
+
+---
+## API do R
+
+**Alerta:** Cenas fortes de alocação de memória nos próximos slides.
+
+Como já comentado, o R por dentro é escrito majoritariamente em C. Isso quer
+dizer que é possível acessar a interface interna do R e escrever código
+diretamente em C. O lugar onde isso fica mais visível é no código de algumas
+funções base do R (e outros pacotes específicos):
+
+
+```r
+purrr::map
+```
+
+```
+#&gt; function (.x, .f, ...) 
+#&gt; {
+#&gt;     .f &lt;- as_mapper(.f, ...)
+#&gt;     .Call(map_impl, environment(), ".x", ".f", "list")
+#&gt; }
+#&gt; &lt;bytecode: 0x7fc7ffccdc98&gt;
+#&gt; &lt;environment: namespace:purrr&gt;
+```
+
+---
+## API do R
+
+Diferentemente do `{Rcpp}`, a API C não lida com *garbage collector*, então é
+necessário liberar toda a memória reservada durante a execução de uma função.
+Além disso, o único verdadeiro tipo de objeto na API C é a `SEXP` (expressão
+simbólica), que tem inúmeros subtipos que reperesentam os objetos do R.
+
+
+```r
+pryr::sexp_type(10L)
+```
+
+```
+#&gt; [1] "INTSXP"
+```
+
+```r
+pryr::sexp_type("a")
+```
+
+```
+#&gt; [1] "STRSXP"
+```
+
+```r
+pryr::sexp_type(TRUE)
+```
+
+```
+#&gt; [1] "LGLSXP"
+```
+
+---
+
+## Pacotes com código C++
+
+- O código C++ vai na pasta `src`.
+- A função `usethis::use_rcpp()` vai fazer tudo pra gente!
+- Adicionar código C++ em um pacote é uma decisão importante (principalmente se você for colocar no CRAN): aumenta bastante a complexidade de manutenção.
+Compilar código em diferentes compiladores pode ser complicado.
+
+Referência: https://r-pkgs.org/src.html
+
+---
+## API do R
+
+A maior vantagem de aprender a API C é entender melhor como o R funciona. O
+resto é desvantagem.
+
+
+```r
+cria_vetor &lt;- inline::cfunction(body = "
+  SEXP num = PROTECT(allocVector(REALSXP, 4));
+  UNPROTECT(1);
+  return num;
+")
+
+cria_vetor()
+```
+
+```
+#&gt; [1] 4.243992e-314 8.487983e-314 1.273197e-313 6.941466e-310
+```
+
+`allocVector()` abre espaço para um vetor sem limpar a memória que está lá.
+`PROTECT()` protege a expressão do *garbage collector* e`UNPROTECT()` libera os
+últimos `n` objetos protegidos.
+
+---
+class: middle, center
+
+## Exemplo 11
+
+---
+## RcppParallel
+
+O `{RcppParallel}` é uma ferramenta para processamento paralelo no R através do
+`{Rcpp}`. Diferentemente de grande parte das funções paralelas do R padrão, o 
+`{RcppParallel}` trabalha com a `oneTBB` (que também funciona no Windows).
+
+Ele disponibiliza uma interface de alto nível para quem quer simplicidade
+(`parallelFor()` e `parallelReduce()`) e uma de baixo nível para quem quer lidar
+com o *threads* individualmente (através da `TinyThread++`).
+
+Como se não bastasse, o `{RcppParallel}` tem estruturas de dados (`RVector` e
+`RMatrix`) e diversos algoritmos já preparados para trabalhar em ambientes
+paralelos. O [TCC do Caio](https://lente.dev/ddr-ug.pdf) foi feito inteiro
+usando o `{RcppParallel}`!
+
+```Rcpp
+// [[Rcpp::depends(RcppParallel)]]
+#include &lt;RcppParallel.h&gt;
+using namespace RcppParallel;
+```
+
+---
+## RcppParallel
+
+É um pouco difícil de aprender a usar o `{RcppParallel}` e não conseguiremos
+abordar tudo aqui, mas a [documentação](https://rcppcore.github.io/RcppParallel/)
+é bastante completa.
+
+O conceito mais importante é o "trabalhador": ele é uma estrutura que define o
+formado das entradas e saídas e um `operator()` que será chamado pelo
+`parallelFor()`.
+
+O `parallelFor()`, por sua vez, recebe os índices do início/fim do vetor de
+entrada e um functor (mistura de função com entradas e saídas) para aplicar.
+
+```Rcpp
+struct SquareRoot : public Worker {}
+void operator()(std::size_t begin, std::size_t end) {}
+
+SquareRoot functor(input, output);
+parallelFor(0, x.size(), functor);
+```
+
+---
+class: middle, center
+
+## Exemplo 12
+
+---
+
+## cpp11
+
+O pacote cpp11 tem objetivos parecidos com o Rcpp e foi implementado mais recentemente.
+
+Os problemas com o Rcpp que ele tenta resolver são:
+
+- Ficar mais seguro em usar a API C do R (principalmente lidar com erros)
+- Suporte a objetos ALTREP
+- Compilar mais rápido e precisar de menos memória.
+
+---
+
+class: middle, center
+
+## Exemplo 13: introCpp11.cpp
+
+---
+
+class: middle, center
+
+## Obrigado
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
